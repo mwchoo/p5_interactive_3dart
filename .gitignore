@@ -1,0 +1,8 @@
+.DS_STORE
+.idea/
+desktop.ini
+origin resource/
+*.mb
+*.mtl
+F2A.obj
+*.bmp
