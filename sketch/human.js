@@ -12,6 +12,9 @@ class Human {  // Implemented by Minwoo Choo
 
   drawBody() {
     push();
+    if (this.walk) {
+      rotateY(-sin(rot) * 0.1);
+    }
     model(humanModel.body);
     pop();
   }
@@ -27,12 +30,10 @@ class Human {  // Implemented by Minwoo Choo
     }
     translate(0, -90, 0);
     model(humanModel.leg_l_h);
-    //pop();
 
-    //push();
     translate(0, 50, 0);
     if (this.walk) {
-      rotateX(-sin(rot) * 0.5);
+      rotateX(-sin(rot) * 0.4 + 0.2);
     }
     translate(0, -50, 0);
     model(humanModel.leg_l_l);
@@ -46,12 +47,10 @@ class Human {  // Implemented by Minwoo Choo
     }
     translate(0, -90, 0);
     model(humanModel.leg_r_h);
-    //pop();
 
-    //push();
     translate(0, 50, 10);
     if (this.walk) {
-      rotateX(sin(rot) * 0.5);
+      rotateX(sin(rot) * 0.4 + 0.2);
     }
     translate(0, -50, -10);
     model(humanModel.leg_r_l);
