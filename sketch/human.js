@@ -63,8 +63,8 @@ class Human {  // Implemented by Minwoo Choo
     push();
     noStroke();
     rotateZ(PI);
-    scale(2);
-    translate(this.pos.x, this.pos.y, this.pos.z);
+    scale(1);
+    translate(this.pos.x, this.pos.y - 80, this.pos.z);
 
     if (this.direction === 'forward') {
       rotateY(PI);

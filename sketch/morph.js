@@ -22,7 +22,7 @@ class BottomMark {
 
   render() {
     push();
-    translate(0, 100, 0);
+    translate(0, 80, 0);
     rotateX(HALF_PI);
     noFill();
     stroke(200);

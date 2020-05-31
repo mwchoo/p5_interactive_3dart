@@ -37,7 +37,7 @@ let Y = -200;  // 0;
 let Z = 500;  //1700;
 let centerX = 0;
 let centerY = -100;
-let centerZ = 0;
+let centerZ = -2000;
 let h = 20;
 
 let spotPos, spotDir, modelPos;
@@ -74,6 +74,7 @@ function setup() {
   srot = 0;
 
   human = new Human();
+  door = new Door();
   initButtomMark();
   // sounds.bgm.play();
   // blinder.style.opacity = '0';
@@ -103,6 +104,7 @@ function draw() {
   }
 
   human.render();
+  drawDoor();
   drawBottomMark();
 
   /*if (!sounds.bgm.isPlaying()) {
@@ -133,7 +135,7 @@ function handleKeyDown() {
   if (keyIsDown(UP_ARROW)) {
     // W: go forward
     human.direction = 'forward';
-
+    human.pos.z -= 2;
     /*Z -= 10;
     Y = cos(Z / 50) * 60 - 100 - 200;  // walk effect
     centerX = 0;
@@ -142,7 +144,7 @@ function handleKeyDown() {
   } else if (keyIsDown(DOWN_ARROW)) {
     // S: go backward
     human.direction = 'backward';
-
+    human.pos.z += 2;
     /*Z += 10;
     Y = cos(Z / 50) * 60 - 100 - 200;  // walk effect
     centerX = 0;
