@@ -1,6 +1,10 @@
 let bottomMark = [];
 const NUM_OF_BOTTOMMARK = 3;
 
+let curMolphScene = 0; // 0 to NUM_OF_BOTTOM_MARK
+let molphobj;
+let molphtimer;
+
 class BottomMark {
   constructor(x, y, z) {
     this.pos = {
@@ -24,12 +28,23 @@ class BottomMark {
   }
 
   handleBottomMark() {
-    const {x, y, z} = this.pos;
-    console.log(this.pos);
-    console.log(human.pos);
+    const {x, z} = this.pos;
     if (human.pos.x > x - this.radius / 2 && human.pos.x < x + this.radius / 2 &&
       human.pos.z > z - this.radius / 2 && human.pos.z < z + this.radius / 2) {
       this.activated = true;
+      if (this.mode === 0) {
+        molphobj.show = true;
+        if (molphobj.molphStep >= 1) {
+          if (!molphtimer.activated) {
+            molphtimer.setTimer();
+          }
+          if (molphtimer.checkTimeout()) {
+            this.mode = 1;
+          }
+        } else {
+          molphobj.molphStep += 0.01;
+        }
+      }
     }
   }
 
@@ -97,4 +112,97 @@ function drawBottomMark() {
   for (let i = 0; i < NUM_OF_BOTTOMMARK; i++) {
     bottomMark[i].render();
   }
+}
+
+class Molph {
+  constructor() {
+    this.pos = [];
+    this.circle = [];
+    this.morph = [];
+    this.morphtarget = [];
+    this.morphDetail;
+    this.molphStep = 0; // 0 to 1
+    this.show = false;
+  }
+
+  readData(uri) {
+    fetch(uri)
+      .then(response => response.text())
+      .then(text => this.loadMorphTarget(text))
+  }
+
+  loadMorphTarget(data) {
+    // load target geometry
+    this.morphDetail = 0;
+    this.lines = split(data, '\n');
+    for (let i = 0; i < this.lines.length; i++) {
+      let pieces = split(this.lines[i], '\t');
+      if (pieces.length < 2) break;
+      let v = new p5.Vector(parseInt(pieces[0]),
+        parseInt(pieces[1]));
+      this.morphtarget.push(v);
+      this.morph.push(new p5.Vector());
+      this.morphDetail++;
+    }
+    // set circle vertices
+    let angle = -PI;
+    for (let i = 0; i < this.morphDetail; i++) {
+      let x = width / 2 + 200 * cos(angle);
+      let y = height / 2 + 200 * sin(angle);
+      let v = new p5.Vector(x, y);
+      this.circle.push(v);
+      angle += TWO_PI / this.morphDetail;
+    }
+  }
+
+  render() {
+    if (!this.show) return;
+    push();
+    // morphing
+    scale(0.5)
+    translate(0, -(height * 2 / 3), 0);
+
+    let morphed = this.molphStep; //map(mouseX, 0, width, 0, 1);
+    console.log(morphed);
+    for (let i = 0; i < this.morphDetail; i++) {
+      let o = this.circle[i];
+      let t = this.morphtarget[i];
+      this.morph[i] = p5.Vector.lerp(o, t, morphed);
+    }
+    /*for (let i = 0; i < this.morphDetail; i++) {
+      let o = this.circle[i];
+      let t = this.morphtarget[i];
+      this.morph[i] = p5.Vector.lerp(o, t, this.molphStep); // interpolated
+    }*/
+    // render morphed geometry
+    beginShape();
+    noFill();
+    stroke(128);
+    strokeWeight(4);
+    for (let i = 0; i < this.morphDetail; i++) {
+      let v = this.morph[i];
+      vertex(v.x, v.y);
+    }
+    endShape(CLOSE);
+    pop();
+  }
+}
+
+function initMolph() {
+  molphobj = new Molph();
+  handleMolph();
+  molphtimer = new Timer(3000, molphExpired);
+}
+
+function handleMolph() {
+  const index = curMolphScene % NUM_OF_BOTTOMMARK;
+  //molphobj.readData('assets/out' + index.toString() + '.txt');
+  molphobj.readData('assets/out0.txt');
+}
+
+function molphExpired() {
+  molphobj.molphStep = 0;
+  molphobj.show = false;
+  curMolphScene++;
+  handleMolph();
 }

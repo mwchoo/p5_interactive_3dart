@@ -45,7 +45,9 @@ class Timer {  // implemented by Minwoo Choo
       // expired!
       this.execFunc();
       this.activated = false;
+      return true;
     }
+    return false;
   }
 }
 

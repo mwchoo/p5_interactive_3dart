@@ -1,7 +1,6 @@
 class Human {  // Implemented by Minwoo Choo
   constructor() {
-    this.walk = true;
-    this.rot = 0;
+    this.walk = false;
     this.direction = 'backward';
     this.pos = {
       x: 0,

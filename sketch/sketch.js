@@ -76,6 +76,8 @@ function setup() {
   human = new Human();
   door = new Door();
   initButtomMark();
+  initMolph();
+  //readData();
   // sounds.bgm.play();
   // blinder.style.opacity = '0';
 }
@@ -106,6 +108,7 @@ function draw() {
   human.render();
   drawDoor();
   drawBottomMark();
+  molphobj.render();
 
   /*if (!sounds.bgm.isPlaying()) {
     getAudioContext().resume();
@@ -130,7 +133,7 @@ function handlePov() {
 
 function handleKeyDown() {
   // handle rot speed of propeller to control altitude
-  if (scene === 1) return;
+  if (scene === 1 || molphobj.show) return;
 
   if (keyIsDown(UP_ARROW)) {
     // W: go forward
@@ -172,6 +175,7 @@ function handleKeyDown() {
 
 function keyPressed() {
   if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
+    if (scene === 1 || molphobj.show) return;
     human.walk = true;
     /*handleHumanPos(keyCode);
     if (!sounds.walk.isPlaying()) {
