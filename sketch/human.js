@@ -67,18 +67,19 @@ class Human {  // Implemented by Minwoo Choo
     translate(this.pos.x, this.pos.y, this.pos.z);
 
     if (this.direction === 'forward') {
-      rotateZ(PI);
+      rotateY(PI);
     } else if (this.direction === 'backward') {
     } else if (this.direction === 'left') {
-      rotateZ(HALF_PI);
+      rotateY(HALF_PI);
     } else if (this.direction === 'right') {
-      rotateZ(-HALF_PI);
+      rotateY(-HALF_PI);
     }
 
     this.drawBody();
     this.drawLegs();
 
     if (this.walk) {
+      this.pos.y = sin(rot);
       rot += 0.1;
     }
 

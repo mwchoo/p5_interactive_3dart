@@ -32,8 +32,8 @@ let human;
 //let scene_timer;
 let rot = 0;
 
-let X = -160;  // 0;
-let Y = -600;  // 0;
+let X = 160;  // 0;
+let Y = -200;  // 0;
 let Z = 500;  //1700;
 let centerX = 0;
 let centerY = -100;
@@ -42,9 +42,6 @@ let h = 20;
 
 let spotPos, spotDir, modelPos;
 let mrot, srot;
-
-let gameStart = false;
-let isCleared = false;
 
 document.onselectstart = function () {
   // prevent mouse drag or text/element selection
@@ -77,6 +74,7 @@ function setup() {
   srot = 0;
 
   human = new Human();
+  initButtomMark();
   // sounds.bgm.play();
   // blinder.style.opacity = '0';
 }
@@ -105,6 +103,7 @@ function draw() {
   }
 
   human.render();
+  drawBottomMark();
 
   /*if (!sounds.bgm.isPlaying()) {
     getAudioContext().resume();
@@ -133,49 +132,45 @@ function handleKeyDown() {
 
   if (keyIsDown(UP_ARROW)) {
     // W: go forward
-    /*human.direction = 'forward';*/
+    human.direction = 'forward';
 
-    Z -= 10;
+    /*Z -= 10;
     Y = cos(Z / 50) * 60 - 100 - 200;  // walk effect
     centerX = 0;
     centerY = -100;
-    centerZ = 0;
-
+    centerZ = 0;*/
   } else if (keyIsDown(DOWN_ARROW)) {
     // S: go backward
-    /*human.direction = 'backward';*/
+    human.direction = 'backward';
 
-    Z += 10;
+    /*Z += 10;
     Y = cos(Z / 50) * 60 - 100 - 200;  // walk effect
     centerX = 0;
     centerY = -100;
-    centerZ = 0;
-
+    centerZ = 0;*/
   }
   if (keyIsDown(LEFT_ARROW)) {
     // A: turn your head to the left
-    /*human.direction = 'left'*/
+    human.direction = 'left'
 
-    X -= 20;
+    /*X -= 20;
     centerX = 0;
     centerY = -100;
-    centerZ = 0;
-
+    centerZ = 0;*/
   } else if (keyIsDown(RIGHT_ARROW)) {
     // D: turn your head to the right
-    /*human.direction = 'right';*/
+    human.direction = 'right';
 
-    X += 20;
+    /*X += 20;
     centerX = 0;
     centerY = -100;
-    centerZ = 0;
-
+    centerZ = 0;*/
   }
 }
 
 function keyPressed() {
-  if (gameStart && keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
-    /*human.walk = true;*/
+  if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
+    human.walk = true;
     /*handleHumanPos(keyCode);
     if (!sounds.walk.isPlaying()) {
       sounds.walk.play();
@@ -188,8 +183,8 @@ function keyPressed() {
 
 function keyReleased() {
   if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
-    /*human.rot = 0;
-    human.walk = false;*/
+    human.rot = 0;
+    human.walk = false;
     /*if (sounds.walk.isPlaying()) {
       sounds.walk.stop();
     }*/
