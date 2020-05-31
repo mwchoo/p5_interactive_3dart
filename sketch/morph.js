@@ -10,6 +10,9 @@ class BottomMark {
     }
     this.radius = 50;
     this.trianglePoints = [];
+    this.currentRad = 0.1;
+    this.mode = 0; // 0: triangle, 1: tri to cir, 2: circle
+    this.activated = false;
 
     for (let i = 0; i < 3; i++) { // triangle vertices
       let x = this.radius * cos(i * TWO_PI / 3.0 - HALF_PI);
@@ -20,16 +23,46 @@ class BottomMark {
     }
   }
 
+  handleBottomMark() {
+    const {x, y, z} = this.pos;
+    console.log(this.pos);
+    console.log(human.pos);
+    if (human.pos.x > x - this.radius / 2 && human.pos.x < x + this.radius / 2 &&
+      human.pos.z > z - this.radius / 2 && human.pos.z < z + this.radius / 2) {
+      this.activated = true;
+    }
+  }
+
   render() {
     const {x, y, z} = this.pos;
     push();
     translate(x, y + 80, z);
     rotateX(HALF_PI);
     noFill();
-    stroke(200);
+
+    if (this.activated) {
+      if (this.mode === 2) {
+        stroke(0, 250, 0);
+      } else {
+        stroke(250, 0, 0);
+      }
+    } else {
+      stroke(200);
+    }
     strokeWeight(5);
 
-    this.currentRad = 0.5 + 0.5 * sin(millis() / 1000.0);
+    if (this.mode === 0) { // triangle
+      this.currentRad = 0.1;
+    } else if (this.mode === 1) { // tri to cir
+      this.currentRad += 0.02;
+      if (this.currentRad > 1) {
+        this.mode = 2;
+      }
+    } else if (this.mode === 2) { // circle
+      this.currentRad = 1;
+    } else { // default
+      this.currentRad = 0.5 + 0.5 * sin(millis() / 1000.0);
+    }
     let rad = this.currentRad * this.radius;
 
     beginShape();
@@ -48,13 +81,14 @@ class BottomMark {
     }
     endShape(CLOSE);
     pop();
+
+    this.handleBottomMark();
   }
 }
 
 function initButtomMark() {
   for (let i = 0; i < NUM_OF_BOTTOMMARK; i++) {
     const markpos = (door.pos.z / (NUM_OF_BOTTOMMARK + 1)) * (i + 1);
-    console.log(markpos);
     bottomMark.push(new BottomMark(0, 0, markpos));
   }
 }
