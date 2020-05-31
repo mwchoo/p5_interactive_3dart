@@ -2,11 +2,11 @@ let bottomMark = [];
 const NUM_OF_BOTTOMMARK = 3;
 
 class BottomMark {
-  constructor() {
+  constructor(x, y, z) {
     this.pos = {
-      x: 0,
-      y: 0,
-      z: 0
+      x: x,
+      y: y,
+      z: z
     }
     this.radius = 50;
     this.trianglePoints = [];
@@ -21,8 +21,9 @@ class BottomMark {
   }
 
   render() {
+    const {x, y, z} = this.pos;
     push();
-    translate(0, 80, 0);
+    translate(x, y + 80, z);
     rotateX(HALF_PI);
     noFill();
     stroke(200);
@@ -51,10 +52,15 @@ class BottomMark {
 }
 
 function initButtomMark() {
-  
-  bottomMark.push(new BottomMark());
+  for (let i = 0; i < NUM_OF_BOTTOMMARK; i++) {
+    const markpos = (door.pos.z / (NUM_OF_BOTTOMMARK + 1)) * (i + 1);
+    console.log(markpos);
+    bottomMark.push(new BottomMark(0, 0, markpos));
+  }
 }
 
 function drawBottomMark() {
-  bottomMark[0].render();
+  for (let i = 0; i < NUM_OF_BOTTOMMARK; i++) {
+    bottomMark[i].render();
+  }
 }
