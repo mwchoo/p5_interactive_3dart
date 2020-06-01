@@ -30,6 +30,8 @@ let humanModel = {
   leg_r_h: undefined,
   leg_r_l: undefined
 };
+let endingPlane;
+let endingImg = [];
 let bgColor;
 let human;
 //let scene_timer;
@@ -59,6 +61,9 @@ function preload() {
   humanModel.leg_l_l = loadModel('assets/leg_l_l.obj');
   humanModel.leg_r_h = loadModel('assets/leg_r_h.obj');
   humanModel.leg_r_l = loadModel('assets/leg_r_l.obj');
+  for (let i = 0; i < 3; i++) {
+    endingImg.push(loadImage('assets/ending' + i.toString() + '.jpg'));
+  }
 }
 
 function setup() {
@@ -70,6 +75,7 @@ function setup() {
   gl.disable(gl.DEPTH_TEST);*/
 
   //scene_timer = new Timer(3000, handleScene);
+  endingPlane = createGraphics(width, height);
   bgColor = color(0, 0, 0);
   spotPos = new p5.Vector(-1000, 2000, 200);
   modelPos = new p5.Vector(-200, 1000, 0);
@@ -88,6 +94,17 @@ function setup() {
 function draw() {
   background(bgColor);
 
+  // scene control
+  if (scene === 0) {
+    // walks to the door
+  } else if (scene === 1) {
+    // ending
+    drawEnding();
+    return;
+  } else if (scene === 2) {
+    return;
+  }
+
   // light setting
   lights();
   pointLight(100, 100, 100, sin(srot) * 4000, -1300, cos(srot) * 100 - 100);
@@ -100,15 +117,6 @@ function draw() {
 
   // camera setting
   camera(X, Y, Z, centerX, centerY, centerZ, 0, 1, 0);
-
-  // scene control
-  if (scene === 0) {
-    // walks to the door
-  } else if (scene === 1) {
-    // ending
-    background(255);
-    return;
-  }
 
   human.render();
   drawDoor();
@@ -143,6 +151,7 @@ function handleKeyDown() {
 
   if (keyIsDown(UP_ARROW)) {
     // W: go forward
+    human.walk = true;
     human.direction = 'forward';
     human.pos.z -= 2;
     /*Z -= 10;
@@ -152,6 +161,7 @@ function handleKeyDown() {
     centerZ = 0;*/
   } else if (keyIsDown(DOWN_ARROW)) {
     // S: go backward
+    human.walk = true;
     human.direction = 'backward';
     human.pos.z += 2;
     /*Z += 10;
@@ -162,6 +172,7 @@ function handleKeyDown() {
   }
   if (keyIsDown(LEFT_ARROW)) {
     // A: turn your head to the left
+    human.walk = true;
     human.direction = 'left'
 
     /*X -= 20;
@@ -170,6 +181,7 @@ function handleKeyDown() {
     centerZ = 0;*/
   } else if (keyIsDown(RIGHT_ARROW)) {
     // D: turn your head to the right
+    human.walk = true;
     human.direction = 'right';
 
     /*X += 20;

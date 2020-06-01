@@ -92,5 +92,6 @@ function handleClear() {
   if (human.pos.x > x - 60 && human.pos.x < x + 60 &&
     human.pos.z > z - 40 && human.pos.z < z - 20) {
     scene = 1;
+    bgColor = color(255, 255, 255);
   }
 }

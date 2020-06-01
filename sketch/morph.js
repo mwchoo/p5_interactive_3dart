@@ -206,7 +206,7 @@ function molphExpired() {
 }
 
 function handleHeartbeat() {
-  if (curMolphScene === NUM_OF_BOTTOMMARK) {
+  if (scene === 0 && curMolphScene === NUM_OF_BOTTOMMARK) {
     // ToDo. play heartbeat
     bgColor = color(sin(millis() * 0.01) * 100, 0, 0);
   }
