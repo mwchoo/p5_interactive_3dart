@@ -164,7 +164,7 @@ class Molph {
     push();
     // morphing
     scale(0.5)
-    translate(0, -(height * 2 / 3), 0);
+    translate(0, -(height * 2 / 3), human.pos.z * 2 - 10);
 
     let morphed = this.molphStep; //map(mouseX, 0, width, 0, 1);
     for (let i = 0; i < this.morphDetail; i++) {
@@ -196,6 +196,13 @@ function initMolph() {
 function handleMolph() {
   const index = curMolphScene % NUM_OF_BOTTOMMARK;
   molphobj.readData('assets/out' + index.toString() + '.txt');
+  if (curMolphScene === NUM_OF_BOTTOMMARK) {
+    sounds.bgm.stop();
+    if (!car_acc_played && !sounds.car_acc.isPlaying()) {
+      sounds.car_acc.play();
+      car_acc_played = true;
+    }
+  }
 }
 
 function molphExpired() {
@@ -209,6 +216,8 @@ function handleHeartbeat() {
   if (scene === 0 && curMolphScene === NUM_OF_BOTTOMMARK) {
     // ToDo. play heartbeat
     bgColor = color(sin(millis() * 0.01) * 100, 0, 0);
+    if (!sounds.heartbeat.isPlaying()) {
+      sounds.heartbeat.play();
+    }
   }
-  //bgColor = color(sin(millis() * 0.01) * 100, 0, 0);
 }

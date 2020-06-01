@@ -1,4 +1,4 @@
-# :watch: At the end of the time
+# :watch: At the end of the life
 AAT4001: Project 9 - Interactive 3D art using p5.js [Sogang Univ]
 
 ```
@@ -14,8 +14,8 @@ Minimum Full HD(1920 x 1080) resolution or Higher (Based on DPI Scailing 100%)
 ```
 ARROW_UP Key: go forward
 ARROW_DOWN Key: go backward
-
-Mouse Move: cam angle
+ARROW_LEFT Key: turn your head to the left
+ARROW_RIGHT Key: turn your head to the right
 
 P Key: screen shot
 ```

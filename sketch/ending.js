@@ -3,25 +3,22 @@ let tintVal = 0;
 
 function drawEnding() {
   push();
+  camera(0, 0, (height / 2.0) / tan(PI * 30.0 / 180.0), 0, 0, 0, 0, 1, 0);
   noStroke();
   endingPlane.noStroke();
+  if (!sounds.beep.isPlaying()) {
+    sounds.beep.play();
+  }
 
   if (endingIndex === 0) {
-    /*tint(255, tintVal);
-    image(endingImg[endingIndex], -width/2, -height/2, width, height);*/
     endingPlane.tint(255, tintVal);
-    //endingPlane.background(endingImg[endingIndex]);
-    endingPlane.image(endingImg[endingIndex], 0, 0, width, height);
+    endingPlane.background(endingImg[endingIndex]);
   } else if (endingIndex === 1 || endingIndex === 2) {
-    /*image(endingImg[endingIndex - 1], -width/2, -height/2, width, height);
-    tint(255, tintVal);
-    image(endingImg[endingIndex], -width/2, -height/2, width, height);*/
-    //endingPlane.background(endingImg[endingIndex - 1]);
-    endingPlane.image(endingImg[endingIndex - 1], 0, 0, width, height);
+    endingPlane.background(endingImg[endingIndex - 1]);
     endingPlane.tint(255, tintVal);
-    //endingPlane.background(endingImg[endingIndex]);
-    endingPlane.image(endingImg[endingIndex], 0, 0, width, height);
+    endingPlane.background(endingImg[endingIndex]);
   } else if (endingIndex === 3) {
+    bgColor = color(0, 0, 0);
     scene = 2;
   }
   tintVal += 5;

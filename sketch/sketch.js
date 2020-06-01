@@ -5,14 +5,13 @@
 < MANUAL >
 ARROW_UP Key: go forward
 ARROW_DOWN Key: go backward
-
-Mouse Move: cam angle
+ARROW_LEFT Key: turn your head to the left
+ARROW_RIGHT Key: turn your head to the right
 
 P Key: screen shot
 */
 
 let scene = 0;
-let pov_mode = 0;
 let sounds = {
   bgm: undefined,
   walk: undefined,
@@ -20,9 +19,6 @@ let sounds = {
   heartbeat: undefined,
   beep: undefined
 }
-let textures = {}
-let image_scene = {};
-let line_data = [];
 let humanModel = {
   body: undefined,
   leg_l_h: undefined,
@@ -36,6 +32,7 @@ let bgColor;
 let human;
 //let scene_timer;
 let rot = 0;
+let car_acc_played = false;
 
 let X = 160;  // 0;
 let Y = -200;  // 0;
@@ -54,8 +51,11 @@ document.onselectstart = function () {
 };
 
 function preload() {
-  //sounds.bgm = loadSound('assets/bgm.mp3');
+  sounds.bgm = loadSound('assets/bgm.mp3');
   sounds.walk = loadSound('assets/walk.mp3');
+  sounds.car_acc = loadSound('assets/car_acc.mp3');
+  sounds.heartbeat = loadSound('assets/heartbeat.mp3');
+  sounds.beep = loadSound('assets/beep.mp3');
   humanModel.body = loadModel('assets/body.obj');
   humanModel.leg_l_h = loadModel('assets/leg_l_h.obj');
   humanModel.leg_l_l = loadModel('assets/leg_l_l.obj');
@@ -86,9 +86,7 @@ function setup() {
   door = new Door();
   initButtomMark();
   initMolph();
-  //readData();
-  // sounds.bgm.play();
-  // blinder.style.opacity = '0';
+  sounds.bgm.play();
 }
 
 function draw() {
@@ -124,25 +122,12 @@ function draw() {
   molphobj.render();
   handleHeartbeat();
 
-  /*if (!sounds.bgm.isPlaying()) {
+  if (!sounds.bgm.isPlaying()) {
     getAudioContext().resume();
     sounds.bgm.play();
-  }*/
-
-  //handleDisplay();
-  handleKeyDown();
-  handlePov();
-}
-
-function handlePov() {
-  if (pov_mode === 0) {
-    /*X = -160;
-    Y = -160;
-    Z = 550;
-    centerX = 0;
-    centerY = -100;
-    centerZ = 0;*/
   }
+
+  handleKeyDown();
 }
 
 function handleKeyDown() {
@@ -150,44 +135,34 @@ function handleKeyDown() {
   if (scene === 1 || molphobj.show) return;
 
   if (keyIsDown(UP_ARROW)) {
-    // W: go forward
+    // go forward
     human.walk = true;
     human.direction = 'forward';
     human.pos.z -= 2;
-    /*Z -= 10;
-    Y = cos(Z / 50) * 60 - 100 - 200;  // walk effect
-    centerX = 0;
-    centerY = -100;
-    centerZ = 0;*/
+
+    Z -= 2;
+    Y = cos(Z / 10) * 10 - 200;  // walk effect
   } else if (keyIsDown(DOWN_ARROW)) {
-    // S: go backward
+    // go backward
     human.walk = true;
     human.direction = 'backward';
     human.pos.z += 2;
-    /*Z += 10;
-    Y = cos(Z / 50) * 60 - 100 - 200;  // walk effect
-    centerX = 0;
-    centerY = -100;
-    centerZ = 0;*/
+
+    Z += 2;
+    Y = cos(Z / 10) * 10 - 200;  // walk effect
   }
   if (keyIsDown(LEFT_ARROW)) {
-    // A: turn your head to the left
+    // turn your head to the left
     human.walk = true;
     human.direction = 'left'
 
-    /*X -= 20;
-    centerX = 0;
-    centerY = -100;
-    centerZ = 0;*/
+    X -= 10;
   } else if (keyIsDown(RIGHT_ARROW)) {
-    // D: turn your head to the right
+    // turn your head to the right
     human.walk = true;
     human.direction = 'right';
 
-    /*X += 20;
-    centerX = 0;
-    centerY = -100;
-    centerZ = 0;*/
+    X += 10;
   }
 }
 
@@ -195,10 +170,9 @@ function keyPressed() {
   if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
     if (scene === 1 || molphobj.show) return;
     human.walk = true;
-    /*handleHumanPos(keyCode);
     if (!sounds.walk.isPlaying()) {
       sounds.walk.play();
-    }*/
+    }
   }
   if (keyCode === 80) {
     saveImage();
@@ -209,18 +183,9 @@ function keyReleased() {
   if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW) {
     human.rot = 0;
     human.walk = false;
-    /*if (sounds.walk.isPlaying()) {
+    if (sounds.walk.isPlaying()) {
       sounds.walk.stop();
-    }*/
-  }
-}
-
-function mouseClicked() {
-  // mouse click event to control pov mode
-  if (pov_mode === 0) {
-    pov_mode = 1;
-  } else {
-    pov_mode = 0;
+    }
   }
 }
 
