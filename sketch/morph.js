@@ -70,7 +70,7 @@ class BottomMark {
       this.currentRad = 0.1;
     } else if (this.mode === 1) { // tri to cir
       this.currentRad += 0.02;
-      if (this.currentRad > 1) {
+      if (this.currentRad > 1) { // transform done
         this.mode = 2;
       }
     } else if (this.mode === 2) { // circle
@@ -116,13 +116,17 @@ function drawBottomMark() {
 
 class Molph {
   constructor() {
+    this.initMolph();
+    this.show = false;
+  }
+
+  initMolph() {
     this.pos = [];
     this.circle = [];
     this.morph = [];
     this.morphtarget = [];
-    this.morphDetail;
+    this.morphDetail = 0;
     this.molphStep = 0; // 0 to 1
-    this.show = false;
   }
 
   readData(uri) {
@@ -133,11 +137,7 @@ class Molph {
 
   loadMorphTarget(data) {
     // load target geometry
-    this.pos = [];
-    this.circle = [];
-    this.morph = [];
-    this.morphtarget = [];
-    this.morphDetail = 0;
+    this.initMolph();
     this.lines = split(data, '\n');
     for (let i = 0; i < this.lines.length; i++) {
       let pieces = split(this.lines[i], '\t');
@@ -172,11 +172,7 @@ class Molph {
       let t = this.morphtarget[i];
       this.morph[i] = p5.Vector.lerp(o, t, morphed);
     }
-    /*for (let i = 0; i < this.morphDetail; i++) {
-      let o = this.circle[i];
-      let t = this.morphtarget[i];
-      this.morph[i] = p5.Vector.lerp(o, t, this.molphStep); // interpolated
-    }*/
+
     // render morphed geometry
     beginShape();
     noFill();
@@ -212,6 +208,7 @@ function molphExpired() {
 function handleHeartbeat() {
   if (curMolphScene === NUM_OF_BOTTOMMARK) {
     // ToDo. play heartbeat
-    
+    bgColor = color(sin(millis() * 0.01) * 100, 0, 0);
   }
+  //bgColor = color(sin(millis() * 0.01) * 100, 0, 0);
 }

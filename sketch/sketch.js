@@ -30,6 +30,7 @@ let humanModel = {
   leg_r_h: undefined,
   leg_r_l: undefined
 };
+let bgColor;
 let human;
 //let scene_timer;
 let rot = 0;
@@ -69,7 +70,7 @@ function setup() {
   gl.disable(gl.DEPTH_TEST);*/
 
   //scene_timer = new Timer(3000, handleScene);
-
+  bgColor = color(0, 0, 0);
   spotPos = new p5.Vector(-1000, 2000, 200);
   modelPos = new p5.Vector(-200, 1000, 0);
   mrot = 0;
@@ -85,7 +86,7 @@ function setup() {
 }
 
 function draw() {
-  background(0);
+  background(bgColor);
 
   // light setting
   lights();
@@ -113,6 +114,7 @@ function draw() {
   drawDoor();
   drawBottomMark();
   molphobj.render();
+  handleHeartbeat();
 
   /*if (!sounds.bgm.isPlaying()) {
     getAudioContext().resume();
