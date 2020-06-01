@@ -104,8 +104,10 @@ function draw() {
   }
 
   // light setting
-  lights();
+  //lights();
+  ambientLight(70);
   pointLight(100, 100, 100, sin(srot) * 4000, -1300, cos(srot) * 100 - 100);
+  directionalLight(250, 250, 250, 0, 0, 2000);
 
   srot += 0.01;
   spotPos.x = 200 * cos(srot);
@@ -156,13 +158,13 @@ function handleKeyDown() {
     human.walk = true;
     human.direction = 'left'
 
-    X -= 10;
+    X -= 5;
   } else if (keyIsDown(RIGHT_ARROW)) {
     // turn your head to the right
     human.walk = true;
     human.direction = 'right';
 
-    X += 10;
+    X += 5;
   }
 }
 
