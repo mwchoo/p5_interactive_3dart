@@ -83,5 +83,14 @@ class Human {  // Implemented by Minwoo Choo
     }
 
     pop();
+    handleClear();
+  }
+}
+
+function handleClear() {
+  const {x, z} = door.pos;
+  if (human.pos.x > x - 60 && human.pos.x < x + 60 &&
+    human.pos.z > z - 40 && human.pos.z < z - 20) {
+    scene = 1;
   }
 }

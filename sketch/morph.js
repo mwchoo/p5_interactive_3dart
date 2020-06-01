@@ -1,5 +1,5 @@
 let bottomMark = [];
-const NUM_OF_BOTTOMMARK = 3;
+const NUM_OF_BOTTOMMARK = 5;
 
 let curMolphScene = 0; // 0 to NUM_OF_BOTTOM_MARK
 let molphobj;
@@ -133,6 +133,10 @@ class Molph {
 
   loadMorphTarget(data) {
     // load target geometry
+    this.pos = [];
+    this.circle = [];
+    this.morph = [];
+    this.morphtarget = [];
     this.morphDetail = 0;
     this.lines = split(data, '\n');
     for (let i = 0; i < this.lines.length; i++) {
@@ -163,7 +167,6 @@ class Molph {
     translate(0, -(height * 2 / 3), 0);
 
     let morphed = this.molphStep; //map(mouseX, 0, width, 0, 1);
-    console.log(morphed);
     for (let i = 0; i < this.morphDetail; i++) {
       let o = this.circle[i];
       let t = this.morphtarget[i];
@@ -196,8 +199,7 @@ function initMolph() {
 
 function handleMolph() {
   const index = curMolphScene % NUM_OF_BOTTOMMARK;
-  //molphobj.readData('assets/out' + index.toString() + '.txt');
-  molphobj.readData('assets/out0.txt');
+  molphobj.readData('assets/out' + index.toString() + '.txt');
 }
 
 function molphExpired() {
@@ -205,4 +207,11 @@ function molphExpired() {
   molphobj.show = false;
   curMolphScene++;
   handleMolph();
+}
+
+function handleHeartbeat() {
+  if (curMolphScene === NUM_OF_BOTTOMMARK) {
+    // ToDo. play heartbeat
+    
+  }
 }

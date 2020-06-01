@@ -16,6 +16,8 @@ let pov_mode = 0;
 let sounds = {
   bgm: undefined,
   walk: undefined,
+  car_acc: undefined,
+  heartbeat: undefined,
   beep: undefined
 }
 let textures = {}
@@ -103,6 +105,8 @@ function draw() {
     // walks to the door
   } else if (scene === 1) {
     // ending
+    background(255);
+    return;
   }
 
   human.render();
